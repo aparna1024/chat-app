@@ -1,0 +1,76 @@
+body{
+    margin: 0 0 0 0;
+}
+#profileimag{
+    height: 50px;
+    border-radius: 50%;
+    padding-top: 5;
+}
+.flex{   
+    margin: 8px;  
+    display: flex;
+    justify-content: space-between
+}
+.viewRight{
+    padding: 10px;
+    float: right;
+}
+.tooltip:hover .tooltiptext {
+visibility: visible;
+}
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 100px;
+height: 20px;
+background-color: rgb(75, 73, 73);
+
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 5px 0;
+/* margin-top:35px ; */
+/* Position the tooltip */
+float: right;
+z-index: 1;
+}
+
+/* ------------------------- */
+#left{
+border-style: groove;
+border-radius: 5px;
+width: 30%;
+text-align: center;
+}
+#right{
+display: flex;
+justify-content: center;
+border-style: groove;
+border-radius: 5px;
+width: 70%;
+height: 365px;
+}
+.leftsub{
+    cursor: pointer;
+    padding: 30px;
+}
+.ls:hover{
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 1.1);
+}
+.btn{
+display: flex;
+justify-content: space-between;
+}
+input[type='text'],input[type='password']{
+padding: 10px;
+width:90%;
+border-radius: 5px;
+}
+.abc{
+margin: 0 auto;
+margin-top: 50px;padding: 40px;
+width: 300px;
+}
+#updateimgbackground{
+width: 30%;
+border-radius: 50%;
+}

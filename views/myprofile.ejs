@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/myprofile.css" />
+    <title>My Profile</title>
+</head>
+<body>
+    <div>
+        <div  class="tooltip" style="text-align: center; background-color: rgb(64, 206, 231); padding: 3px; cursor: pointer; margin: 0%; width: auto"><h1 style="color: black;" id="gotohome" >Chat App</h1><span class="tooltiptext">Home</span></div>
+        <div id="top" class="flex">
+            <div class="flex">
+                <div><img id="profileimag" src="<%= curruser.userprofilepic %>"></div>
+                <div class="viewRight" style="padding-top: 0px;"><h3 id="uname"><%= curruser.username %></h3></div>
+            </div>
+            <div style="padding-top: 25px;">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </div><hr>
+    <div class="flex">
+        <div id="left">
+            <div class="leftsub ls" id="un">Change Username</div><hr>
+            <div class="leftsub ls" id="ui">Change Profile Image</div><hr>
+            <div class="leftsub ls" id="up">Change password</div><hr>
+            <div class="leftsub"><a href="/logout">Logout</a></div>
+        </div>
+
+        <div id="right"  style="margin: 5px;">
+            <img src="./img/updateprofile.png" id="updateimgbackground">
+            <div  id="changeusername" class="abc" style="display:none; padding-left: 10%;" class="rightsub">
+                <div >
+                    <div style="size: 40;">Enter User Name</div><br>
+                    <input class="input" id="updatedname" name="updatedname" type="text" placeholder="Enter Username" autocomplete="off"/><br>
+                    <span id="updateduser" class="validation"></span><br>
+                    <div class="btn">
+                    <div><button type="submit"  id="upname">Save</button></div>    
+                    <div><button type="submit" onclick="canceldiv()">Cancel</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="changeprofileimg" class="abc" style="display:none;padding-left: 10%;" class="rightsub">
+                <div><form action="/upimg" method="post"  enctype="multipart/form-data">
+                    <div style="size: 40;">Add New Profile Image</div><br>
+                    <input class="input" id="updatedpimg" name="updatedpimg" type="file" autocomplete="off"/><br>
+                    <span id="updatedprofileimg" class="validation"></span><br>
+                    <div class="btn">
+                        <div><button type="submit" id="upimgprofile">Save</button></div>
+                        <div><button type="submit" onclick="canceldiv()">Cancel</button></div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+            <div  id="changepassword"class="abc" style="display:none;padding-left: 10%;" class="rightsub">
+                <div >
+                    <div style="size: 40;">Change Password</div><br>
+                    <input class="input" type="password" name="password" id="password" password="password" placeholder="Enter password" autocomplete="off"/><br>
+                    <span id="changepasswrd" class="validation"></span><br>
+                    <div class="btn">
+                    <div><button type="submit" id="uppasswd" >Save</button></div>
+                    <div><button type="submit" onclick="canceldiv()">Cancel</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script src="js/myprofile.js"></script>
+</html>

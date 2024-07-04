@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/home.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Chat App</title>
+</head>
+<body class="<%=curruser.userid%>">
+    <div>
+        <div style="text-align: center; background-color: rgb(64, 206, 231); padding: 3px; "><h1 >Chat App</h1></div>
+        <div id="top" class="flex">
+            <div class="flex tooltip" style="cursor: pointer;" id="myprofile">
+                <div><img id="profileimag" src="<%= curruser.userprofilepic %>"></div>
+                <div class="viewRight" style="padding-top: 0px;"><h3><%= curruser.username %></h3></div><br>
+                <span class="tooltiptext">My profile</span>
+            </div>
+            <div style="padding-top: 25px;">
+                <a href="/logout">Logout</a>
+            </div>
+        </div><hr>
+    </div>
+    <div class="flex" id="topmaindiv" >
+        <div id="left">
+            <br>
+            <div id="nav" >
+                <div id="chat" class="point">Chat</div>
+                <div id="group" class="point">Group</div>
+                <div id="gpinvitation" class="point">Group Invitations</div>
+                <div id="searchicon" class="point"><i class="fa fa-search"></i></div>
+            </div>
+            <hr>
+            <div id="search" style="display: none" ><input class="input" style="margin: 0px,3px,0px,3px;width: 85%;" id="find" name="search" oninput="findfunction()" type="text" placeholder="Search..." autocomplete="off"/><br></div>
+            <div id="topfrndmaindiv">
+              <!-- ----------------------------------------------------------------------->
+              <div id="divforchat">
+                <% alluser.forEach(u=>{ if(u._id != curruser.userid) {%>
+                  <div class="frndiv">
+                  <div class="frndmaindiv <%=u._id %> <%=u.username %> <%= u.profileimg %> chat" id="leftChat<%=u._id %>">
+                    <div><img class="frnduser" id="img<%=u._id %>"src="<%= u.profileimg %>"></div>
+                      <div class="frndname" id="nam"><%= u.username %></div>
+                  </div><hr>
+                  </div>
+                <%} }) %>  
+              </div>
+              <!-- ------------------------------------------------------------------------- -->
+              <div id="divforgroup" style="display: none;">
+                <div style="margin: 2px;" id="newgp">
+                <input id="newgpname" type="text" style="padding:5px 3px 5px 3px ;height: 50%; margin-top: 8px;" placeholder=" Create New Group..." autocomplete="off"/>
+                <input type="submit" value="Create" class="bttn" id="createnewgp"/>
+                </div>
+                <div id="cgp">
+                  <% gpmember.forEach(gm=>{ %>
+                    <% gp.forEach(g=>{ %>
+                     <% if(gm.gpid==g._id && gm.status=="true"){ %>
+                      <div class="gpfrndiv">
+                      <div class="frndmaindiv <%=g._id %> <%=g.gpname %> gp" id="leftChat<%=g._id %>">
+                        <div><img class="frnduser" src="./img/bydefaultprofilepic.png"></div>
+                        <div class="frndname"><%= g.gpname %></div>
+                      </div><hr>
+                      </div>
+
+                 <% } }) })%>
+                  
+                </div>
+              </div>
+              <!-- ----------------------------------------------------------------------------- -->
+              <div id="divforinvitation" style="display: none;">
+                <% gpmember.forEach(gm=>{ %>
+                  <% if(gm.gpMemberid==curruser.userid && gm.status=="false"){ %>
+                    <% const f = gp.find(gp => gp._id == gm.gpid); %>
+                    <div class="indiv">
+                <div class="frndmaindiv <%=gm.gpid %> <%=f.gpname %> igp" id="igp<%=gm.gpid %>" >
+                  <div><img class="frnduser" src="./img/bydefaultprofilepic.png"></div>
+                    <div  class="frndname"><%= f.gpname %></div>
+                </div><hr id="ingp<%=gm.gpid %>">
+                </div>
+               <% } }) %>
+
+              </div>
+            </div> 
+        </div>
+        <div id="right" style="margin: 5px; " >
+            <div id="rightis"><img src="./img/messgimg.png" id="messgimg" ></div>
+
+            <div id="rightmain" style="display: none;">
+                <div style="float: inline-end; padding-right: 10px;" ><i class="fa fa-close" style="cursor: pointer;" onclick="removecurrchat()"></i></div>
+                <div id="chatuserinfo" style="display: flex;justify-content: space-between ">
+                    <div class="k">
+                        <div><img class="frnduser" id="openchatrightimg" src="./img/bydefaultprofilepic.png"></div>
+                        <div class="frndname" id="openchatinright">abcd</div>
+
+                    </div>
+                    <div id="addnewmember" style="display: none;" >
+                      <input type="submit" value="Add Member" id="admembr" style="margin-top:20px ;" class="btn"/>
+                    </div>
+                    
+                </div><hr>
+
+                 <% alluser.forEach(u=>{ if(u._id != curruser.userid) {%>
+                  <div id="userchat<%=u._id%>" style="display: none;" class="uchat ">
+                    <% onetoonemessg.forEach(onemessg=>{%>
+                    <% if((onemessg.senderid==u._id && onemessg.reciverid==curruser.userid) || (onemessg.senderid==curruser.userid && onemessg.reciverid==u._id)){ %>
+                        <% if(onemessg.senderid==curruser.userid){ %>
+                         <div  class="cls" style="padding: 5px; width: 97%; margin: 5px; border-radius: 5px ; background-color:rgb(229, 243, 247) ; text-align: right" >
+                        <% }else{ %>
+                          <div  class="cls" style="padding: 5px; width: 97%; margin: 5px; border-radius: 5px ; background-color:rgb(247, 242, 242)" >
+                        <%}%>
+                            <div style="font-size: 10px; color: gray;"></div>
+                              <div style="padding:5px ;width: 98%;">
+                                <%= onemessg.messg %>
+                              </div>
+                                <div style="font-size: 10px; color: gray;">
+                                 <%=onemessg.date %> , <%= onemessg.time%>
+                                </div>
+                         </div>
+                    <% } })%>
+              </div>
+            <%} }) %>
+
+                <% gpmember.forEach(gm=>{ %>
+                  <% gp.forEach(g=>{ %>
+                   <% if(gm.gpid==g._id && gm.status=="true"){ %>
+                    <div id="userchat<%=g._id %>" class="uchat" style="display:none;">
+                    <% gpmess.forEach(gpmessg=>{%>
+                      <% if(gpmessg.gpid==g._id){ %>
+                        <% if(gpmessg.gpMemberid==curruser.userid){ %>
+                          <div  class="cls" style="padding: 5px; width: 97%; margin: 5px; border-radius: 5px ; background-color:rgb(229, 243, 247) ; text-align: right" >
+                            <div style="font-size: 10px; color: gray;">
+                              You
+                            </div>
+                        <% }else{ %>
+                          <div  class="cls" style="padding: 5px; width: 97%; margin: 5px; border-radius: 5px ; background-color:rgb(247, 242, 242)" >
+                            <% alluser.forEach(u=>{if(u._id==gpmessg.gpMemberid ){ %>
+                              <div style="font-size: 10px; color: gray;">
+                                <%= u.username %>
+                              </div>
+                            <%}}) %>
+                        <% }%>
+                          
+                          <div style="padding:5px ;width: 98%;">
+                             <%= gpmessg.messg %>
+                          </div>
+                          <div style="font-size: 10px; color: gray;">
+                              <%= gpmessg.date %> , <%= gpmessg.time %>
+                          </div>
+                        </div>
+                    <% } })%>
+                    </div>
+                <% } }) })%>
+
+                
+                <div id="newchat">
+
+                    <input id="typedmessg" name="typedmessg" type="text" placeholder="Message..." style="width: 80%;"autocomplete="off"/>
+                    <!-- Hidden file input -->
+                    <input type="file" id="fileInput" style="display: none;">
+
+                    <!-- Camera icon -->
+                    <!-- <div onclick="openFileDialog()"style="padding-top:12px"><i class="fa fa-paperclip" style="font-size:30px;"></i></div> -->
+                    <input type="submit" value="Send" id="sendMessg" class="sendmessg bttn" style="width: 15%;"/>
+                    <input type="submit" value="Send" id="sendgpMessg" x="" class="sendmessg bttn" style=" width: 15%; display: none;"/>
+                </div>
+
+            </div>
+           
+            <div id="rightforinvitation" style="display: none;">
+              <div style="float: right; padding-right: 15px;" ><i class="fa fa-close" style="cursor: pointer;" onclick="removegpinvitations()"></i></div>
+              <div class="abc">
+                <div style="display: flex;">
+                <div style="size: 40;" >Group Name: </div><div id="gname"></div>
+                </div>
+                <br>
+                <div class="btn ">
+                  <div><button type="submit" id="acceptgp" >Accept</button></div>
+                  <div><button type="submit" id="rejectgp">Reject</button></div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!-- ---------------------------------------------------------------------------------------------------------------------------------------- -->
+    <div id="addmemberdiv" style="display: none;">
+      <temp style="display: none;"></temp>
+        <div style="float: right; padding-right: 15px;" ><i class="fa fa-close" style="cursor: pointer;" onclick="removeaddmemberdiv()"></i></div>
+        <div style="text-align: center;" ><h1 id="rr" >Add Member to Group..</h1></div><br>
+        <div  style="padding-left: 20%; padding-right: 20%;" >
+          <div style="padding: 0 10 0 10;">
+              <input class="input" id="serchmembr" type="text" placeholder="Search..." autocomplete="off"/><br><br>
+
+              <% alluser.forEach(u=>{ %>
+                <% if(u._id!=curruser.userid){%>
+                <div style="display: flex; justify-content: space-between; padding: 0 10% 0 10%;">
+                  <div><%= u.username %></div>
+                  <div><button type="submit" class="clickforaddmember <%=u._id %> " >Add</button></div>
+                </div>
+                <hr>
+             <% }}) %>
+
+          </div>
+      </div>
+    </div>
+    
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/home.js"></script>
+
+</html>
